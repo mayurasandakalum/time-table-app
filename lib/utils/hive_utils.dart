@@ -9,7 +9,7 @@ final Logger log = Logger();
 Future<Box<dynamic>> _openHiveBox() async {
   try {
     final box = await Hive.openBox(hiveDb);
-    log.d('Hive opened successfully');
+    // log.d('Hive opened successfully');
     return box;
   } catch (error, stackTrace) {
     log.e('Error initializing Hive', error, stackTrace);
@@ -18,15 +18,28 @@ Future<Box<dynamic>> _openHiveBox() async {
 }
 
 // insert  data
-Future<void> insertToLocal({required String key, required Event value}) async {
+Future<void> insertToLocal(
+    {required String key, required List<Event> value}) async {
   final box = await _openHiveBox();
   box.put(key, value);
 
-  log.d("$key: '$value'\ninserted successfully");
+  log.d("'$key' inserted successfully");
 }
 
 // Retrive data
-Future<Event> readFromLocal({required key}) async {
+Future<List<Event>> readFromLocal({required String key}) async {
   final box = await _openHiveBox();
   return box.get(key);
+}
+
+// Clear Hive database
+Future<void> clearLocalDb() async {
+  try {
+    final box = await _openHiveBox();
+    await box.clear();
+    log.d('Hive database cleared successfully');
+  } catch (error, stackTrace) {
+    log.e('Error clearing Hive database', error, stackTrace);
+    rethrow;
+  }
 }

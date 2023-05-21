@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:time_table_app/models/event_model.dart';
 import 'package:time_table_app/models/module.dart';
 import 'package:time_table_app/utils/constants.dart';
+import 'package:time_table_app/utils/get_next_weekday_date.dart';
 import 'package:time_table_app/utils/hive_utils.dart';
 import 'package:time_table_app/utils/combine_time_with_today.dart';
 import 'firebase_options.dart';
@@ -59,13 +60,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late Event name;
-  late Map<String, dynamic> event;
+  late Map name = {};
+  late Map<String, List<Event>> event;
 
   final CollectionReference _timeData =
       FirebaseFirestore.instance.collection(firebaseCollection);
 
-  void storeJsonData(BuildContext context) async {
+  void _storeJsonDataToCloud(BuildContext context) async {
     final jsonFile =
         await rootBundle.loadString('assets/json/schedule_data.json');
     final jsonData = json.decode(jsonFile);
@@ -75,79 +76,102 @@ class _HomeState extends State<Home> {
   }
 
   void _loadLocalData() async {
-    final data = await readFromLocal(key: "name");
-    setState(() => name = data);
+    for (var day in weekDays) {
+      try {
+        final data = await readFromLocal(key: getNextWeekdayDate(day));
+        // log.v(data, getNextWeekdayDate(day));
+        log.v(
+            "${data[0].moduleName} - ${data[0].from}", getNextWeekdayDate(day));
+      } catch (error) {
+        continue;
+      }
+    }
   }
 
-  void _loadCloudData() async {
-    var querySnapshot = await _timeData.get();
-    if (querySnapshot.docs.isNotEmpty) {
-      var document = querySnapshot.docs.first;
-      var data = document.data();
-      log.v(data);
-    }
+  // void _loadCloudData() async {
+  //   var querySnapshot = await _timeData.get();
+  //   if (querySnapshot.docs.isNotEmpty) {
+  //     var document = querySnapshot.docs.first;
+  //     var data = document.data();
+  //     log.v(data);
+  //   }
+  // }
+
+  void _storeDataCloudToLocal() {
+    _timeData.get().then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        var document = querySnapshot.docs.first;
+        var data = document.data();
+        // log.v(data);
+
+        final List<Event> eventsForADay = [];
+        final Map<String, List<Event>> eventsForAGroup = {};
+
+        (data as Map<String, dynamic>).forEach((semester, values) {
+          for (var value in (values as List)) {
+            (value as Map<String, dynamic>).forEach((group, values) {
+              (values as Map<String, dynamic>).forEach((day, values) {
+                eventsForADay.clear();
+                for (var event in (values as List)) {
+                  eventsForADay.add(Event(
+                    from: combineTimeWithToday(event["from"]),
+                    to: combineTimeWithToday(event["to"]),
+                    moduleCode: event["moduleCode"],
+                    moduleName: Module().find(semester, event["moduleCode"]),
+                    title: event["title"],
+                    building: event["building"],
+                    floor: event["floor"],
+                    hallNumber: event["hallNumber"],
+                    instructorName: event["instructorName"],
+                    backgroundColorValue:
+                        const Color.fromARGB(255, 0, 255, 0).value,
+                  ));
+                }
+                eventsForAGroup[day] = eventsForADay.toList();
+              });
+              eventsForAGroup.forEach((day, events) {
+                insertToLocal(
+                  key: getNextWeekdayDate(day),
+                  value: events,
+                );
+              });
+              // log.v(eventsForAGroup);
+            });
+          }
+        });
+        // log.v(eventsForAGroup);
+      }
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    // _loadLocalData();
-    // _loadCloudData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ElevatedButton(
-        child: const Text("Store data"),
-        // onPressed: () => storeJsonData(context),
-        // onPressed: () => print(name),
-        onPressed: () {
-          _timeData.get().then((querySnapshot) {
-            if (querySnapshot.docs.isNotEmpty) {
-              var document = querySnapshot.docs.first;
-              var data = document.data();
-              // log.v(data);
-
-              final List<Event> eventsForADay = [];
-              final Map<String, List<Event>> eventsForAGroup = {};
-
-              (data as Map<String, dynamic>).forEach((semester, values) {
-                for (var value in (values as List)) {
-                  (value as Map<String, dynamic>).forEach((group, values) {
-                    (values as Map<String, dynamic>).forEach((day, values) {
-                      for (var event in (values as List)) {
-                        // log.v((event));
-                        // eventsForADay.add(Event(
-                        //   from: combineTimeWithToday(event["from"]),
-                        //   to: combineTimeWithToday(event["to"]),
-                        //   moduleCode: event["moduleCode"],
-                        //   moduleName:
-                        //       Module().find(semester, event["moduleCode"]),
-                        //   title: event["title"],
-                        //   building: event["building"],
-                        //   floor: event["floor"],
-                        //   hallNumber: event["hallNumber"],
-                        //   instructorName: event["instructorName"],
-                        //   backgroundColorValue:
-                        //       const Color.fromARGB(255, 0, 255, 0).value,
-                        // ));
-
-                        if (day == "tuesday") {
-                          log.v(event);
-                        }
-                      }
-                      // eventsForAGroup[day] = eventsForADay;
-                      // eventsForADay.clear();
-                    });
-                  });
-                }
-              });
-              log.v(eventsForAGroup);
-            }
-          });
-        },
-      ),
-    );
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          child: const Text("Store data in Firebase"),
+          onPressed: () => _storeJsonDataToCloud(context),
+        ),
+        ElevatedButton(
+          child: const Text("Store data in Hive"),
+          onPressed: () => _storeDataCloudToLocal(),
+        ),
+        ElevatedButton(
+          child: const Text("Load hive data"),
+          onPressed: () => _loadLocalData(),
+        ),
+        ElevatedButton(
+          child: const Text("Clear hive data"),
+          onPressed: () => clearLocalDb(),
+        ),
+      ],
+    ));
   }
 }
