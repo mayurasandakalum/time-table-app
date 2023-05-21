@@ -1,0 +1,136 @@
+{
+  "y2s2": [
+    {
+      "Y1.S1.WD.IT.02.01": {
+        "monday": [
+          {
+            "from": "08.30 AM",
+            "to": "10.30 AM",
+            "moduleCode": "IT2010",
+            "title": "Tute in lab",
+            "building": "Main",
+            "floor": "4th",
+            "hallNumber": "B402 - PC Lab",
+            "instructorName": "Mr. Thusithanjana Thilarakarathne"
+          },
+          {
+            "from": "02.30 PM",
+            "to": "05.30 PM",
+            "moduleCode": "IT2110",
+            "title": "Lecture, Tutorial",
+            "building": "Main",
+            "floor": "5th",
+            "hallNumber": "B502",
+            "instructorName": ""
+          }
+        ],
+        "tuesday": [
+          {
+            "from": "09.30 AM",
+            "to": "11.30 AM",
+            "moduleCode": "IT2110",
+            "title": "Practical BYOD",
+            "building": "Multi Purpose Lecture Hall - New",
+            "floor": "11th",
+            "hallNumber": "G1101",
+            "instructorName": ""
+          },
+          {
+            "from": "11.30 AM",
+            "to": "1.30 PM",
+            "moduleCode": "IT2010",
+            "title": "Practical",
+            "building": "Main",
+            "floor": "4th",
+            "hallNumber": "A406 - Pclab",
+            "instructorName": ""
+          },
+          {
+            "from": "02.30 PM",
+            "to": "04.30 PM",
+            "moduleCode": "IT2070",
+            "title": "Lecture",
+            "building": "New",
+            "floor": "13th",
+            "hallNumber": "F1308",
+            "instructorName": "Dr. Samantha Rajapakshe"
+          },
+          {
+            "from": "04.30 PM",
+            "to": "05.30 PM",
+            "moduleCode": "IT2070",
+            "title": "Tutorial",
+            "building": "New",
+            "floor": "13th",
+            "hallNumber": "F1308",
+            "instructorName": "Ms.Dinuka Wijendra"
+          }
+        ],
+        "wednesday": [
+          {
+            "from": "08.30 AM",
+            "to": "09.30 AM",
+            "moduleCode": "IT2010",
+            "title": "Lecture",
+            "building": "New",
+            "floor": "3rd",
+            "hallNumber": "F302",
+            "instructorName": "Mr.Thusithanjana Thilakarathne"
+          },
+          {
+            "from": "09.30 AM",
+            "to": "11.30 AM",
+            "moduleCode": "IT2070",
+            "title": "Practical",
+            "building": "New",
+            "floor": "13th",
+            "hallNumber": "F1301 + F1302",
+            "instructorName": ""
+          },
+          {
+            "from": "11.30 AM",
+            "to": "01.30 PM",
+            "moduleCode": "IT2090",
+            "title": "Lecture",
+            "building": "Main",
+            "floor": "5th",
+            "hallNumber": "B501",
+            "instructorName": "Prof. Koliya Pulasinghe"
+          }
+        ],
+        "friday": [
+          {
+            "from": "08.30 AM",
+            "to": "11.30 AM",
+            "moduleCode": "IT2080",
+            "title": "Lecture, Tutorial",
+            "building": "",
+            "floor": "",
+            "hallNumber": "F503 IPU Hall",
+            "instructorName": "Mr. Nalaka Dissanayake"
+          },
+          {
+            "from": "11.30 AM",
+            "to": "01.30 PM",
+            "moduleCode": "IT2080",
+            "title": "Evaluation",
+            "building": "New",
+            "floor": "6th",
+            "hallNumber": "G603",
+            "instructorName": "Mr. Nalaka Dissanayake"
+          },
+          {
+            "from": "03.30 PM",
+            "to": "05.30 PM",
+            "moduleCode": "IT2100",
+            "title": "Lecture",
+            "building": "",
+            "floor": "",
+            "hallNumber": "Main Auditorium",
+            "instructorName": "Mr. Nelum Chathuranga Amarasena"
+          }
+        ]
+      }
+    }
+  ]
+}

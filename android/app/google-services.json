@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "923020113245",
+    "project_id": "time-table-app-85f29",
+    "storage_bucket": "time-table-app-85f29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923020113245:android:e3e3342c2ab40e3a97a4b4",
+        "android_client_info": {
+          "package_name": "com.example.time_table_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923020113245-224jbkeaat48cll1q7dc5nc27fj22cmh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwon_Fn2mopfDCvjTffL9kGeKu4gakpI0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923020113245-224jbkeaat48cll1q7dc5nc27fj22cmh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "923020113245-dc4as0nlusqla2g9l17mkoloq33lsv57.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.timeTable"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
